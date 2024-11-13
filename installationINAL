@@ -1,0 +1,102 @@
+
+
+sudo yum update -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade
+
+# Add required dependencies for the jenkins package
+# sudo yum install fontconfig java-17-openjdk - not work
+sudo dnf install java-17-amazon-corretto -y
+sudo yum install jenkins
+sudo systemctl daemon-reload
+
+You can check the status of the Jenkins service using the command:
+
+sudo systemctl status jenkins
+
+You can enable the Jenkins service to start at boot with the command:
+
+sudo systemctl enable Jenkins
+
+You can start the Jenkins service with the command:
+
+sudo systemctl start jenkins
+
+
+for initial password
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+
+
+sudo yum install git
+
+
+echo $PATH
+
+export PATH=$PATH:/usr/local/bin
+
+
+sudo systemctl restart jenkins
+
+
+
+
+
+
+
+sudo yum update -y
+
+
+sudo yum install -y docker
+
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+docker --version
+
+
+
+if not work then only use this
+sudo systemctl enable docker
+sudo usermod -aG docker jenkins
+
+
+
+
+sudo usermod -aG docker ec2-user
+
+
+newgrp docker
+
+
+docker images
+
+sudo systemctl restart docker(if neccessary)
+
+
+
+
+
+
+
+
+Add the Jenkins User to the Docker Group:
+
+First, check the user that Jenkins is running as (usually jenkins).
+
+You can check the current user Jenkins is running under with:
+
+ps aux | grep jenkins
+This will show the process running Jenkins and the associated user. Typically, it will be jenkins or ec2-user (if you're using an EC2 instance).
+
+Next, add this user to the docker group:
+
+sudo usermod -aG docker jenkins
+If Jenkins is running as ec2-user, replace jenkins with ec2-user in the above command.
+
+Restart Jenkins Service:
+
+After adding the user to the docker group, restart the Jenkins service to apply the changes:
+
+sudo systemctl restart jenkins
